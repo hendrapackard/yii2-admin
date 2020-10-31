@@ -72,7 +72,8 @@ class MenuController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Helper::invalidate();
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success',Yii::t('app', 'Data Successfully Saved'));
+            return $this->redirect('index');
         } else {
             return $this->render('create', [
                     'model' => $model,
@@ -94,7 +95,8 @@ class MenuController extends Controller
         }
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Helper::invalidate();
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success',Yii::t('app', 'Data Successfully Updated'));
+            return $this->redirect('index');
         } else {
             return $this->render('update', [
                     'model' => $model,
@@ -112,8 +114,9 @@ class MenuController extends Controller
     {
         $this->findModel($id)->delete();
         Helper::invalidate();
+        Yii::$app->session->setFlash('success',Yii::t('app', 'Data Successfully Deleted'));
 
-        return $this->redirect(['index']);
+        return $this->redirect('index');
     }
 
     /**

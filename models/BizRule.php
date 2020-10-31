@@ -40,7 +40,7 @@ class BizRule extends \yii\base\Model
     private $_item;
 
     /**
-     * Initialize object
+     * Initilaize object
      * @param \yii\rbac\Rule $item
      * @param array $config
      */
@@ -52,6 +52,19 @@ class BizRule extends \yii\base\Model
             $this->className = get_class($item);
         }
         parent::__construct($config);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => 'bedezign\yii2\audit\AuditTrailBehavior',
+                'ignored' => [ 'created_at', 'updated_at' ],
+            ],
+        ];
     }
 
     /**

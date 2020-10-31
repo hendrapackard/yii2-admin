@@ -50,7 +50,8 @@ class Menu extends MenuModel
         }]);
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query
+            'query' => $query,
+            'pagination' => [ 'pageSize' => 5 ],
         ]);
 
         $sort = $dataProvider->getSort();

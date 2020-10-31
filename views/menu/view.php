@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use kartik\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -12,31 +12,32 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="menu-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
         <?= Html::a(Yii::t('rbac-admin', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?=
         Html::a(Yii::t('rbac-admin', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],
-        ])
+        ]).' '.Html::a(Yii::t('app', 'Create'), ['create'], ['class' => 'btn btn-success']).' '.Html::a(Yii::t('app', 'Back to List'), ['index'], ['class' => 'btn btn-warning']);
+
         ?>
     </p>
-
-    <?=
-    DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'menuParent.name:text:Parent',
-            'name',
-            'route',
-            'order',
-        ],
-    ])
-    ?>
+    <?php $opts = [
+        'heading' => Yii::t('app','Menu Information'),
+        'body' => DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'menuParent.name:text:Parent',
+                'name',
+                'route',
+                'order',
+                'data',
+            ],
+        ]),
+    ];
+    echo Html::panel($opts); ?>
 
 </div>

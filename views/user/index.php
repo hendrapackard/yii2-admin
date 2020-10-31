@@ -1,8 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use mdm\admin\components\Helper;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel mdm\admin\models\searchs\User */
@@ -13,14 +14,46 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <?php Pjax::begin(); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?=
-    GridView::widget([
+    <?= GridView::widget([
+        'pager' => [
+            'firstPageLabel' => 'First',
+            'lastPageLabel'  => 'Last',
+            'maxButtonCount' => 3,
+        ],
+        'responsiveWrap' => false,
+        'hover' => true,
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pjax' => true,
+        'panel' => [
+            'heading' => '<i class="fa fa-list"></i>  '.Yii::t('app','User List'),
+            'type' => GridView::TYPE_DEFAULT,
+        ],
+        'toolbar' =>  [
+            [
+                'content' =>
+                    (Helper::checkRoute('/admin/user/create')) ?
+                        Html::a('<i class="fa fa-plus"></i>', ['create'], [
+                            'data-pjax' => 0,
+                            'class' => 'btn btn-success',
+                            'title'=>Yii::t('app', 'Create User'),
+                        ]) . ' '.
+                        Html::a('<i class="fas fa-redo"></i>', ['index'], [
+                            'class' => 'btn btn-outline-secondary',
+                            'title'=>Yii::t('app', 'Reset Grid'),
+                        ]) : Html::a('<i class="fas fa-redo"></i>', ['index'], [
+                        'class' => 'btn btn-outline-secondary',
+                        'title'=>Yii::t('app', 'Reset Grid'),
+                    ]),
+                'options' => ['class' => 'btn-group mr-2']
+            ],
+            '{export}',
+        ],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            ['class' => 'kartik\grid\SerialColumn'],
             'username',
             'email:email',
             [
@@ -34,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
             [
-                'class' => 'yii\grid\ActionColumn',
+                'class' => 'kartik\grid\ActionColumn',
                 'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
                 'buttons' => [
                     'activate' => function($url, $model) {
@@ -48,11 +81,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-method' => 'post',
                             'data-pjax' => '0',
                         ];
-                        return Html::a('<span class="glyphicon glyphicon-ok"></span>', $url, $options);
+                        return Html::a('<span class="fas fa-check"></span>', $url, $options);
                     }
-                    ]
-                ],
+                ]
             ],
-        ]);
-        ?>
+        ],
+    ]); ?>
+
+    <?php Pjax::end(); ?>
 </div>

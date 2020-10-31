@@ -111,7 +111,7 @@ class ItemController extends Controller
         Configs::authManager()->remove($model->item);
         Helper::invalidate();
 
-        return $this->redirect(['index']);
+        return $this->redirect('index');
     }
 
     /**

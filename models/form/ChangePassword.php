@@ -26,8 +26,21 @@ class ChangePassword extends Model
         return [
             [['oldPassword', 'newPassword', 'retypePassword'], 'required'],
             [['oldPassword'], 'validatePassword'],
-            [['newPassword'], 'string', 'min' => 6],
+//            [['newPassword'], 'string', 'min' => 6],
+            ['newPassword', 'match', 'pattern' => '/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/', 'message' => Yii::t('app','Your password must be more than 8 characters long, should contain at-least 1 uppercase, 1 lowercase, 1 numeric and 1 special character.')],
             [['retypePassword'], 'compare', 'compareAttribute' => 'newPassword'],
+        ];
+    }
+
+    /**
+     * @return array customized attribute labels
+     */
+    public function attributeLabels()
+    {
+        return [
+            'oldPassword' => Yii::t('app', 'Old Password'),
+            'newPassword' => Yii::t('app', 'New Password'),
+            'retypePassword' => Yii::t('app', 'Retype Password'),
         ];
     }
 

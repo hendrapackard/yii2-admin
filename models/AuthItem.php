@@ -56,6 +56,19 @@ class AuthItem extends Model
     /**
      * @inheritdoc
      */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => 'bedezign\yii2\audit\AuditTrailBehavior',
+                'ignored' => [ 'created_at', 'updated_at' ],
+            ],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [

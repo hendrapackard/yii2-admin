@@ -16,6 +16,7 @@ class ResetPassword extends Model
 {
     public $password;
     public $retypePassword;
+    public $verifyCode;
     /**
      * @var User
      */
@@ -53,9 +54,24 @@ class ResetPassword extends Model
     public function rules()
     {
         return [
-            [['password', 'retypePassword'], 'required'],
-            ['password', 'string', 'min' => 6],
+            [['password', 'retypePassword','verifyCode'], 'required'],
+            [['verifyCode'], 'captcha'],
+            ['password', 'match', 'pattern' => '/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/', 'message' => Yii::t('app','Your password must be more than 8 characters long, should contain at-least 1 uppercase, 1 lowercase, 1 numeric and 1 special character.')],
+
+//            ['password', 'string', 'min' => 6],
             ['retypePassword', 'compare', 'compareAttribute' => 'password']
+        ];
+    }
+
+    /**
+     * @return array customized attribute labels
+     */
+    public function attributeLabels()
+    {
+        return [
+            'password' => Yii::t('app', 'Password'),
+            'retypePassword' => Yii::t('app', 'Retype Password'),
+            'verifyCode' => Yii::t('app', 'Verification Code'),
         ];
     }
 

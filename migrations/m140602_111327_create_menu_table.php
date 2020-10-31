@@ -28,7 +28,7 @@ class m140602_111327_create_menu_table extends \yii\db\Migration
             'parent' => $this->integer(),
             'route' => $this->string(),
             'order' => $this->integer(),
-            'data' => $this->binary(),
+            'data' => $this->string(),
             "FOREIGN KEY ([[parent]]) REFERENCES {$menuTable}([[id]]) ON DELETE SET NULL ON UPDATE CASCADE",
         ], $tableOptions);
     }

@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 use mdm\admin\components\RouteRule;
 use mdm\admin\AutocompleteAsset;
 use yii\helpers\Json;
@@ -29,25 +29,32 @@ $this->registerJs($js);
 
 <div class="auth-item-form">
     <?php $form = ActiveForm::begin(['id' => 'item-form']); ?>
-    <div class="row">
-        <div class="col-sm-6">
+    <div class="row m-3">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
             <?= $form->field($model, 'name')->textInput(['maxlength' => 64]) ?>
-
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
             <?= $form->field($model, 'description')->textarea(['rows' => 2]) ?>
         </div>
-        <div class="col-sm-6">
+    </div>
+    <div class="row m-3">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
             <?= $form->field($model, 'ruleName')->textInput(['id' => 'rule_name']) ?>
-
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
             <?= $form->field($model, 'data')->textarea(['rows' => 6]) ?>
         </div>
     </div>
-    <div class="form-group">
-        <?php
-        echo Html::submitButton($model->isNewRecord ? Yii::t('rbac-admin', 'Create') : Yii::t('rbac-admin', 'Update'), [
-            'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
-            'name' => 'submit-button'])
-        ?>
-    </div>
 
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                <div class="form-group">
+                    <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Save') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                    <?= Html::a(Yii::t('app', 'Back to List'), ['index'], ['class' => 'btn btn-warning']) ?>
+                </div>
+            </div>
+        </div>
+    </div>
     <?php ActiveForm::end(); ?>
 </div>

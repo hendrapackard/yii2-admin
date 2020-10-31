@@ -12,6 +12,7 @@ use yii\base\Model;
 class PasswordResetRequest extends Model
 {
     public $email;
+    public $verifyCode;
 
     /**
      * @inheritdoc
@@ -21,13 +22,22 @@ class PasswordResetRequest extends Model
         $class = Yii::$app->getUser()->identityClass ? : 'mdm\admin\models\User';
         return [
             ['email', 'filter', 'filter' => 'trim'],
-            ['email', 'required'],
+            [['email','verifyCode'], 'required'],
+            [['verifyCode'], 'captcha'],
             ['email', 'email'],
             ['email', 'exist',
                 'targetClass' => $class,
                 'filter' => ['status' => UserStatus::ACTIVE],
-                'message' => 'There is no user with such email.'
+                'message' => Yii::t('app','There is no user with such email.')
             ],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'email' => Yii::t('app', 'Email'),
+            'verifyCode' => Yii::t('app', 'Verification Code'),
         ];
     }
 
@@ -51,8 +61,8 @@ class PasswordResetRequest extends Model
             }
 
             if ($user->save()) {
-                return Yii::$app->mailer->compose(['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'], ['user' => $user])
-                    ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+                return Yii::$app->mailer->compose(['html' => 'passwordResetToken-html'], ['user' => $user])
+                    ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
                     ->setTo($this->email)
                     ->setSubject('Password reset for ' . Yii::$app->name)
                     ->send();

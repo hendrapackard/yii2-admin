@@ -12,7 +12,7 @@ use mdm\admin\models\Menu;
  * 
  * ```
  * use mdm\admin\components\MenuHelper;
- * use yii\bootstrap\Nav;
+ * use yii\bootstrap4\Nav;
  *
  * echo Nav::widget([
  *    'items' => MenuHelper::getAssignedMenu(Yii::$app->user->id)

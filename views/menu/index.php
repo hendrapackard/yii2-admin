@@ -1,32 +1,54 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $searchModel mdm\admin\models\searchs\Menu */
 
-$this->title = Yii::t('rbac-admin', 'Menus');
+$this->title = Yii::t('app', 'Menu List');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="menu-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
-
-    <p>
-        <?= Html::a(Yii::t('rbac-admin', 'Create Menu'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?php Pjax::begin(); ?>
-    <?=
-    GridView::widget([
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <?= GridView::widget([
+        'pager' => [
+            'firstPageLabel' => 'First',
+            'lastPageLabel'  => 'Last',
+            'maxButtonCount' => 3,
+        ],
+        'responsiveWrap' => false,
+        'hover' => true,
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pjax' => true,
+        'panel' => [
+            'heading' => '<i class="fa fa-list"></i>  '.$this->title,
+            'type' => GridView::TYPE_DEFAULT,
+        ],
+        'toolbar' =>  [
+            [
+                'content' =>
+                    Html::a('<i class="fa fa-plus"></i>', ['create'], [
+                        'data-pjax' => 0,
+                        'class' => 'btn btn-success',
+                        'title'=>Yii::t('app', 'Create'),
+                    ]).
+                    Html::a('<i class="fas fa-redo"></i>', ['index'], [
+                        'class' => 'btn btn-outline-secondary',
+                        'title'=>Yii::t('app', 'Reset Grid'),
+                    ]),
+                'options' => ['class' => 'btn-group mr-2']
+            ],
+            '{export}',
+        ],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            ['class' => 'kartik\grid\SerialColumn'],
             'name',
             [
                 'attribute' => 'menuParent.name',
@@ -37,10 +59,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'route',
             'order',
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'kartik\grid\ActionColumn',
+                'noWrap' => true
+            ],
         ],
-    ]);
-    ?>
-<?php Pjax::end(); ?>
+    ]); ?>
+
+    <?php Pjax::end(); ?>
 
 </div>

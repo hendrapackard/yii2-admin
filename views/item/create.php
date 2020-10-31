@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use kartik\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model mdm\admin\models\AuthItem */
@@ -13,11 +13,12 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('rbac-admin', $labels['Items
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="auth-item-create">
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?=
-    $this->render('_form', [
-        'model' => $model,
-    ]);
-    ?>
+    <?php $opts = [
+        'heading' => Html::encode($this->title),
+        'body' => $this->render('_form', [
+            'model' => $model,
+        ]),
+    ];
+    echo Html::panel($opts); ?>
 
 </div>

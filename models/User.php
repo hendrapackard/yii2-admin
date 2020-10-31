@@ -46,6 +46,10 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             TimestampBehavior::className(),
+            [
+                'class' => 'bedezign\yii2\audit\AuditTrailBehavior',
+                'ignored' => [ 'created_at', 'updated_at' ],
+            ],
         ];
     }
 

@@ -31,33 +31,58 @@ $this->registerJs($this->render('_script.js'));
 $animateIcon = ' <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></i>';
 ?>
 <div class="assignment-index">
-    <h1><?=$this->title;?></h1>
 
-    <div class="row">
-        <div class="col-sm-5">
-            <input class="form-control search" data-target="available"
-                   placeholder="<?=Yii::t('rbac-admin', 'Search for available');?>">
-            <select multiple size="20" class="form-control list" data-target="available">
-            </select>
+    <div class="card card-default">
+        <div class="card-header">
+            <h5><?=$this->title;?></h5>
         </div>
-        <div class="col-sm-1">
-            <br><br>
-            <?=Html::a('&gt;&gt;' . $animateIcon, ['assign', 'id' => (string) $model->id], [
-    'class' => 'btn btn-success btn-assign',
-    'data-target' => 'available',
-    'title' => Yii::t('rbac-admin', 'Assign'),
-]);?><br><br>
-            <?=Html::a('&lt;&lt;' . $animateIcon, ['revoke', 'id' => (string) $model->id], [
-    'class' => 'btn btn-danger btn-assign',
-    'data-target' => 'assigned',
-    'title' => Yii::t('rbac-admin', 'Remove'),
-]);?>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
+                    <div class="form-group">
+                        <input class="form-control search" data-target="available"
+                               placeholder="<?=Yii::t('rbac-admin', 'Search for available');?>">
+                        <select multiple size="20" class="form-control list" data-target="available">
+                        </select>
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+                <div class="col-12 col-sm-12 col-md-1 col-lg-1 col-xl-1">
+                    <div class="form-group">
+                        <br><br>
+                        <?=Html::a('&gt;&gt;' . $animateIcon, ['assign', 'id' => (string) $model->id], [
+                            'class' => 'btn btn-success btn-assign',
+                            'data-target' => 'available',
+                            'title' => Yii::t('rbac-admin', 'Assign'),
+                        ]);?><br><br>
+                        <?=Html::a('&lt;&lt;' . $animateIcon, ['revoke', 'id' => (string) $model->id], [
+                            'class' => 'btn btn-danger btn-assign',
+                            'data-target' => 'assigned',
+                            'title' => Yii::t('rbac-admin', 'Remove'),
+                        ]);?>
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+                <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
+                    <div class="form-group">
+                        <input class="form-control search" data-target="assigned"
+                               placeholder="<?=Yii::t('rbac-admin', 'Search for assigned');?>">
+                        <select multiple size="20" class="form-control list" data-target="assigned">
+                        </select>
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+            </div>
+            <!-- /.row -->
         </div>
-        <div class="col-sm-5">
-            <input class="form-control search" data-target="assigned"
-                   placeholder="<?=Yii::t('rbac-admin', 'Search for assigned');?>">
-            <select multiple size="20" class="form-control list" data-target="assigned">
-            </select>
+        <!-- /.card-body -->
+        <div class="card-footer">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="form-group">
+                    <?= Html::a(Yii::t('app', 'Back to List'), ['index'], ['class' => 'btn btn-warning']) ?>
+                </div>
+            </div>
         </div>
     </div>
 </div>

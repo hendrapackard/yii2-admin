@@ -51,6 +51,7 @@ class Assignment extends Model
         $query = $class::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [ 'pageSize' => 5 ],
         ]);
 
         if (!($this->load($params) && $this->validate())) {

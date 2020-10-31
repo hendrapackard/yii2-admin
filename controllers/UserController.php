@@ -98,6 +98,44 @@ class UserController extends Controller
     }
 
     /**
+     * Signup new user
+     * @return string
+     */
+    public function actionCreate()
+    {
+        $model = new Signup();
+        if ($model->load(Yii::$app->getRequest()->post())) {
+            if ($user = $model->signup()) {
+                return $this->redirect('index');
+            }
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionUpdate($id)
+    {
+        if ($id == 1){
+            Yii::$app->session->setFlash('error',Yii::t('app', 'Admin Cannot Be Update'));
+            return $this->redirect('index');
+        }
+        $model = $this->findModel($id);
+        $model->setAttribute('password_hash', null);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            Yii::$app->session->setFlash('success',Yii::t('app', 'Data Successfully Updated'));
+            return $this->redirect('index');
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
      * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -107,7 +145,7 @@ class UserController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect('index');
     }
 
     /**
@@ -234,13 +272,13 @@ class UserController extends Controller
         if ($user->status == UserStatus::INACTIVE) {
             $user->status = UserStatus::ACTIVE;
             if ($user->save()) {
-                return $this->goHome();
+                return $this->redirect('index');
             } else {
                 $errors = $user->firstErrors;
                 throw new UserException(reset($errors));
             }
         }
-        return $this->goHome();
+        return $this->redirect('index');
     }
 
     /**

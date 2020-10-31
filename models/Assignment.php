@@ -34,6 +34,19 @@ class Assignment extends \mdm\admin\BaseObject
     }
 
     /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => 'bedezign\yii2\audit\AuditTrailBehavior',
+                'ignored' => [ 'created_at', 'updated_at' ],
+            ],
+        ];
+    }
+
+    /**
      * Grands a roles from a user.
      * @param array $items
      * @return integer number of successful grand

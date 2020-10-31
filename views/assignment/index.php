@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
@@ -10,33 +10,55 @@ use yii\widgets\Pjax;
 /* @var $usernameField string */
 /* @var $extraColumns string[] */
 
-$this->title = Yii::t('rbac-admin', 'Assignments');
+$this->title = Yii::t('app', 'Assignment List');
 $this->params['breadcrumbs'][] = $this->title;
 
 $columns = [
-    ['class' => 'yii\grid\SerialColumn'],
+    ['class' => 'kartik\grid\SerialColumn'],
     $usernameField,
 ];
 if (!empty($extraColumns)) {
     $columns = array_merge($columns, $extraColumns);
 }
 $columns[] = [
-    'class' => 'yii\grid\ActionColumn',
+    'class' => 'kartik\grid\ActionColumn',
     'template' => '{view}'
 ];
 ?>
 <div class="assignment-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <?php Pjax::begin(); ?>
-    <?=
-    GridView::widget([
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <?= GridView::widget([
+        'pager' => [
+            'firstPageLabel' => 'First',
+            'lastPageLabel'  => 'Last',
+            'maxButtonCount' => 3,
+        ],
+        'responsiveWrap' => false,
+        'hover' => true,
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pjax' => true,
+        'panel' => [
+            'heading' => '<i class="fa fa-list"></i>  '.$this->title,
+            'type' => GridView::TYPE_DEFAULT,
+        ],
+        'toolbar' =>  [
+            [
+                'content' =>
+                    Html::a('<i class="fas fa-redo"></i>', ['index'], [
+                        'class' => 'btn btn-outline-secondary',
+                        'title'=>Yii::t('app', 'Reset Grid'),
+                    ]),
+                'options' => ['class' => 'btn-group mr-2']
+            ],
+            '{export}',
+        ],
         'columns' => $columns,
-    ]);
-    ?>
+    ]); ?>
+
     <?php Pjax::end(); ?>
 
 </div>

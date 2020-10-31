@@ -1,9 +1,10 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use mdm\admin\components\RouteRule;
 use mdm\admin\components\Configs;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -12,7 +13,7 @@ use mdm\admin\components\Configs;
 
 $context = $this->context;
 $labels = $context->labels();
-$this->title = Yii::t('rbac-admin', $labels['Items']);
+$this->title = Yii::t('app', $labels['Item'].' List');
 $this->params['breadcrumbs'][] = $this->title;
 
 $rules = array_keys(Configs::authManager()->getRules());
@@ -20,16 +21,42 @@ $rules = array_combine($rules, $rules);
 unset($rules[RouteRule::RULE_NAME]);
 ?>
 <div class="role-index">
-    <h1><?= Html::encode($this->title) ?></h1>
-    <p>
-        <?= Html::a(Yii::t('rbac-admin', 'Create ' . $labels['Item']), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-    <?=
-    GridView::widget([
+    <?php Pjax::begin(); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <?= GridView::widget([
+        'pager' => [
+            'firstPageLabel' => 'First',
+            'lastPageLabel'  => 'Last',
+            'maxButtonCount' => 3,
+        ],
+        'responsiveWrap' => false,
+        'hover' => true,
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pjax' => true,
+        'panel' => [
+            'heading' => '<i class="fa fa-list"></i>  '.$this->title,
+            'type' => GridView::TYPE_DEFAULT,
+        ],
+        'toolbar' =>  [
+            [
+                'content' =>
+                    Html::a('<i class="fa fa-plus"></i>', ['create'], [
+                        'data-pjax' => 0,
+                        'class' => 'btn btn-success',
+                        'title'=>Yii::t('app', 'Create'),
+                    ]).
+                    Html::a('<i class="fas fa-redo"></i>', ['index'], [
+                        'class' => 'btn btn-outline-secondary',
+                        'title'=>Yii::t('app', 'Reset Grid'),
+                    ]),
+                'options' => ['class' => 'btn-group mr-2']
+            ],
+            '{export}',
+        ],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            ['class' => 'kartik\grid\SerialColumn'],
             [
                 'attribute' => 'name',
                 'label' => Yii::t('rbac-admin', 'Name'),
@@ -43,9 +70,12 @@ unset($rules[RouteRule::RULE_NAME]);
                 'attribute' => 'description',
                 'label' => Yii::t('rbac-admin', 'Description'),
             ],
-            ['class' => 'yii\grid\ActionColumn',],
+            ['class' => 'kartik\grid\ActionColumn',
+                'noWrap' => true
+            ],
         ],
-    ])
-    ?>
+    ]); ?>
+
+    <?php Pjax::end(); ?>
 
 </div>
